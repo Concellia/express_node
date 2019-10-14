@@ -1,6 +1,8 @@
 # express_node
+
 #Setting up the database
-. Clone the repo to your local machine
+
+ Clone the repo to your local machine
 . Run npm install on the terminal
 . Change Directory to the repo directory (express_node)
 . To run the database  you need to have installed docker and docker compose onn your local machine.
