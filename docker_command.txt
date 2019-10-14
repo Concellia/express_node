@@ -1,0 +1,11 @@
+To log in to the container after docker compose up.
+Run docker ps to check if the container in running 
+If the container is running then run this command:
+    docker exec -it <container name or container id> bash
+Login into the database using the following command:
+    psql -U user -W db
+    password: pass
+To create the musician table copy and paste this command:
+    CREATE TABLE Musician(musian_id serial PRIMARY KEY NOT NULL, name VARCHAR(60) NOT NULL);
+To create the songs table copy and paste this command:
+    CREATE TABLE songs(song_id serial NOT NULL, musician_id INTEGER REFERENCES Musician(musian_id), song_name VARCHAR(60) NOT NULL, PRIMARY KEY (song_id,musician_id));

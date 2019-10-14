@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Songs</title>
+    <style>
+    html{
+    background-color: #2a2c2c;
+    
+}
+h1{
+    text-align: center;
+    color: wheat;
+    font-size: 40px;
+}
+
+.mylist{
+    background-color: #7f8688;
+    width: 400px;
+    color: #2a2c2c;
+    margin-top: 100px;
+    padding: 20px 20px 20px 20px ;
+    font-size: 25px;
+    float: left;
+};
+    #deleted{
+        padding: 20px 20px 20px 20px ;
+    }
+    button,input{
+        background-color: #2a2c2c;
+        font-size: 25px;
+        border-radius: 6px;
+        padding: 5px 5px 5px 5px;
+        margin-top: 20px;
+        color: wheat;
+
+    }
+    input{
+        width: 400px;
+    }
+    button:hover{
+        cursor: pointer;
+        background-color: #7f8688;
+        color: #2a2c2c;
+
+    }
+    .content{
+        float: right;
+        margin-top: 12px;
+        margin-top: 100px;
+    padding: 20px 20px 20px 20px 
+    }
+    .play{
+        background-color: pink;
+        align-self:center;
+        align-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    #created{
+        background-color: pink;
+        font-size: 25px;
+        border-radius: 0px;
+        padding: 5px 5px 5px 5px;
+        margin-top: 20px;
+        color: #2a2c2c;
+        width: 40%;
+    
+
+    }
+    #createdid{
+        background-color: pink;
+        font-size: 25px;
+        border-radius: 0px;
+        padding: 5px 5px 5px 5px;
+        margin-top: 20px;
+        color: #2a2c2c;
+        width: 50%;
+    }
+    .play button{
+        background-color: #2a2c2c;
+        font-size: 25px;
+        border-radius: 0px;
+        padding: 5px 5px 5px 5px;
+        margin-top: 20px;
+        margin-left: 50%;
+    }
+    .content{
+        float: right;
+        margin-top: 12px;
+        margin-top: 50px;
+    padding: 20px 20px 20px 20px 
+    }
+
+    @media screen and (max-width: 600px){
+    h1{
+    text-align: center;
+    color: wheat;
+    font-size: 20px;
+}
+
+
+.mylist{
+    background-color: #7f8688;
+    width: 400px;
+    color: #2a2c2c;
+    margin-top: 50px;
+    padding: 20px 20px 20px 20px ;
+    font-size: 25px;
+    float: left;
+};
+
+}
+a{
+    text-decoration: none;
+    color: wheat;
+}
+    </style>
+</head>
+<body>
+    
+        <h1 id="head">🎤 🎺 Musical Play List🎺 🎤</h1>
+    <input type="number" id="createdid" placeholder="Enter the musician id you want to create a playlist for eg(3)">
+    <button id="btn1" onclick="create()">Create Play List</button>
+        <div class="mylist">
+            List of Songs
+            <ul id="ul">
+
+            </ul>
+        </div>
+        <div class="content">
+            <div id="adding">
+                <input id="posted" type="text" placeholder="Enter musician name....">
+                <br>
+                <button style="background-color: rgb(20, 20, 32)" onclick="postSong(); listSongs()">Add</button>
+        </div>
+        <div id="deleting">
+                <input id="deleted" type="number" placeholder="ID - song you want to delete" min="0">
+                <br>
+                <button style="background-color: red;" onclick="deleteSong(); listSongs()">Delete🚮</button>
+        </div>
+        <button id="list" style="background-color: rgb(29, 56, 53);" onclick="listSongs()">List Songs</button>
+    
+
+        </div>
+        
+<script>
+
+async function listSongs(){
+    
+    try{
+            const ul = document.getElementById("ul")
+            const mus_id = document.getElementById("createdid").value
+            const musicians = await fetch(`http://localhost:3090/songs/${mus_id}`,{method:"GET"})
+            const list = await musicians.json()
+            while(ul.firstChild){
+                ul.removeChild(ul.firstChild)
+            }
+            list.forEach(element => {
+                const li = document.createElement("li")
+                li.textContent = element.song_name +" - " +element.song_id
+                ul.appendChild(li)
+              
+            });
+            
+        }catch(e){
+            console.log('I failed...'+e)
+
+        }
+    }
+    
+    async function deleteSong(){
+         const result = {}
+         try{
+            const id = document.getElementById("deleted").value
+            const musicians = await fetch("http://localhost:3090/songs",{method:"DELETE", headers:{"content-type":"application/json"},body:JSON.stringify({"song_id":id})})
+            const deleted = await musicians.json()
+            console.log("success")
+
+         }
+         catch(e){
+             console.log("failed to delete")
+
+         }
+    }
+
+    async function postSong(){
+         try{
+             const musician_id = document.getElementById("createdid").value
+            const name = document.getElementById("posted").value
+            const musicians = await fetch(`http://localhost:3090/songs/${musician_id}/${name }`,{method:"POST"})
+            const deleted = await musicians.json()
+            console.log("success")
+
+         }
+         catch(e){
+             console.log("failed to add" + e)
+
+         }
+        
+
+     }
+
+</script>
+</body>
+</html>
