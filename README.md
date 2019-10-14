@@ -10,6 +10,6 @@
 #Running the test
 . To run the test run npm test on your terminal
 . The test were written based on the information that i currently have on my database therefore some test might fail.
-. Adjust the test based on what you will have on your database.
+. Adjust the test based on what you will have on your database
 
 
